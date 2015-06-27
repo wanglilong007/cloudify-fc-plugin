@@ -1,0 +1,42 @@
+###########################################################
+# This Blueprint installs the nodecellar application
+# on an existing host.
+###########################################################
+
+tosca_definitions_version: cloudify_dsl_1_0
+
+imports:  
+  - types/types.yaml
+  - types/plugin.yaml
+
+###########################################################
+# Inputs section allows the user to use same
+# blueprint several times, with different paramters for
+# each time.
+###########################################################
+inputs:
+  site_id:
+      description: >
+        The id of the site will create vm
+      type: string
+      default: "435008B8"
+  image_id:
+      description: >
+        the id of the image will be used for creating vm 
+      type: string
+      default: "i-00000110"
+node_templates:
+
+  ###########################################################
+  # We define a type that inherits cloudify's default
+  # compute node, and adds monitoring capabillities
+  # on top of it.
+  ###########################################################
+
+  host:
+    type: cloudify.fc.nodes.Server
+    properties:
+      site_id: { get_input: site_id }
+      image_id: { get_input: image_id }
+ 
+ 
