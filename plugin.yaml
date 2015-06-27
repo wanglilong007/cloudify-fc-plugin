@@ -1,13 +1,43 @@
-plugins:
-  # Name could be anything, this name is what appears on the beginning of operation
-  # mappings.
-  plugin_name:
-    # Could be 'central_deployment_agent' or 'host_agent'.
-    # If 'central_deployment_agent', this plugin will be executed on the
-    # deployment dedicated agent, other wise it will be executed on the host agent.
-    executor: host_agent
+##################################################################################
+# Cloudify FusionCompute built in types and plugins definitions.
+##################################################################################
 
-    # URL to archive containing the plugin or name of directory containing
-    # the plugin if it is included in the the blueprint directory under the
-    # "plugins" directory.
-    source: https://github.com/cloudify-cosmo/cloudify-plugin-template/archive/master.zip
+plugins:
+  fc:
+    executor: central_deployment_agent
+    source: https://github.com/wanglilong007/cloudify-fc-plugin/archive/master.zip
+
+node_types:
+  cloudify.fc.nodes.Server:
+    derived_from: cloudify.nodes.Compute
+    properties:
+      site_id:
+        default: ''
+      image_id:
+        default: ''
+
+    interfaces:
+      cloudify.interfaces.lifecycle:
+        create: fc.plugin.tasks.create
+        start: fc.plugin.tasks.start
+
+        stop: fc.plugin.tasks.stop
+        delete: fc.plugin.tasks.delete
+      cloudify.interfaces.validation:
+        creation: fc.plugin.tasks.creation_validation
+			
+		
+  cloudify.fc.nodes.WindowsServer:
+    derived_from: cloudify.fc.nodes.Server
+    properties:
+      use_password:
+        default: true
+    interfaces:
+      cloudify.interfaces.worker_installer:
+        install: windows_agent_installer.windows_agent_installer.tasks.install
+        start: windows_agent_installer.windows_agent_installer.tasks.start
+        stop: windows_agent_installer.windows_agent_installer.tasks.stop
+        uninstall: windows_agent_installer.windows_agent_installer.tasks.uninstall
+        restart: windows_agent_installer.windows_agent_installer.tasks.restart
+      cloudify.interfaces.plugin_installer:
+        install: windows_plugin_installer.windows_plugin_installer.tasks.install
