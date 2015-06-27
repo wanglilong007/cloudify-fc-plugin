@@ -21,12 +21,12 @@ from setuptools import setup
 setup(
 
     # Do not use underscores in the plugin name.
-    name='ENTER-PLUGIN-NAME-HERE',
+    name='cloudify-fc-plugin',
 
     version='0.1',
-    author='ENTER-AUTHOR-HERE',
-    author_email='ENTER-AUTHOR-EMAIL-HERE',
-    description='ENTER-DESCRIPTION-HERE',
+    author='wanglilong',
+    author_email='wanliglong007@gmail.com',
+    description='Huawei FusionCompute interface',
 
     # This must correspond to the actual packages in the plugin.
     packages=['plugin'],
