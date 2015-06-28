@@ -29,8 +29,8 @@ def login():
 	    res = req.request();
 	    print res.status
 
- 	   if res.status == 200:
-        	print 'Login OK';
+ 	   #if res.status == 200:
+        	#print 'Login OK';
 
 	    token = res.getheader('X-Auth-Token');
 	    print token
