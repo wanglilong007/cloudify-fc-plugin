@@ -29,7 +29,7 @@ setup(
     description='Huawei FusionCompute interface',
 
     # This must correspond to the actual packages in the plugin.
-    packages=['plugin'],
+    packages=['fc-plugin'],
 
     license='LICENSE',
     zip_safe=False,
