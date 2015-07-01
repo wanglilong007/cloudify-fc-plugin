@@ -1,5 +1,5 @@
 import config
-from BaseRequest import HttpRequest
+from BaseRequest import HttpRequest,GetRequest
 
 def get_versions():
 
@@ -36,7 +36,27 @@ def login():
 	    print token
             return token;
 
-class OnlineRequest(HttpRequest):
+class OnlineRequest():
+ 
+    def __init__(self, token, method, url, body=''):
+            host = config.host;
+            port = config.HTTP_PORT;
+            headers = {
+                   "Host": config.host+":"+config.HTTP_PORT,
+                   "Content-type": "application/json; charset=UTF-8",
+                   "Accept":"application/json; version={}".format(config.VERSION),
+                   "X-Auth-Token": token,
+                }
+            if method == 'GET':
+                    self.requester = GetRequest('http://'+host+':'+port+url, headers)
+            else:
+                    self.requester = HttpRequest(method, host, port, url, headers, body);
+
+    def request(self):
+            res = self.requester.request();
+            return res;
+
+class OnlineRequestOld(HttpRequest):
 
         def __init__(self, token, method, url, body=''):
                 host = config.host;
@@ -66,8 +86,6 @@ class vmHttpRequest(OnlineRequest):
 
         def request(self):
                 res = OnlineRequest.request(self);
-                if res.status == 200:
-                    print '{} {} OK'.format(self.action_url, self.vm_id);
                 logout(self.token);
                 return res;
 

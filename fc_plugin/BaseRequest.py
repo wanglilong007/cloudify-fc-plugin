@@ -34,3 +34,16 @@ class HttpRequest:
 
                 conn.close();
                 return response;
+
+
+class GetRequest:
+ 
+    def __init__(self, url, headers):
+            self.url = url;
+            self.headers = headers;
+    def request(self):
+            req = urllib2.Request(self.url)
+            for key in self.headers:
+                    req.add_header(key, self.headers[key])
+            resp = urllib2.urlopen(req);
+            return resp;

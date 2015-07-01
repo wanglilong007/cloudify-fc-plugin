@@ -58,3 +58,12 @@ def del_vm(site_id, vm_id):
         req = vmHttpRequest("DELETE", site_id, vm_id, "", params)
         req.request();
 	return
+
+def get_vm_info(site_id, vm_id):
+
+        req = vmHttpRequest("GET", site_id, vm_id, "", params)
+        res = req.request();
+	vm_info = json.loads(res.read().decode('utf-8'))
+	
+	return vm_info
+	
