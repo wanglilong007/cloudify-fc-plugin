@@ -3,7 +3,7 @@
 #method, url, headers, body
 
 import httplib
-import urllib
+import urllib, urllib2
 import json
 
 class HttpRequest:
@@ -43,6 +43,7 @@ class GetRequest:
             self.headers = headers;
     def request(self):
             req = urllib2.Request(self.url)
+            print self.url
             for key in self.headers:
                     req.add_header(key, self.headers[key])
             resp = urllib2.urlopen(req);

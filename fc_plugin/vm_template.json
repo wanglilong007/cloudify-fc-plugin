@@ -4,7 +4,7 @@
 	"description":"for rest test", 
 	"group":"",
 	"location":"", //如：urn:sites:1:clusters:1
-	“isBindingHost”:”false”,
+	"isBindingHost":"false",
 	"isTemplate":"true",
 	"autoBoot":"true"
 	"vmConfig":{
@@ -13,38 +13,38 @@
                 	"quantity":integer, //如：2
                 	"reservation":integer, //如：0
                 	"weight" :integer, //如：50
-                	“limit”:integer
+                	"limit":integer
                  	},
 
        		"memory":{
                 	"quantityMB":integer, //如：1024
                 	"reservation":integer, //如：1024
                 	"weight" :integer, 
-                	“limit”:integer
+                	"limit":integer
                 	},
 
          	"disks":[
-			{
-			“sequenceNum”:integer,
-			"quantityGB ": integer,
-			"isDataCopy ": boolean,                          
-			"datastoreUrn ":string, //如：local
-                	"isThin":boolean//如：thin
-                	}
-			],
+				{
+				"sequenceNum":integer,
+				"quantityGB ": integer,
+				"isDataCopy ": boolean,                          
+				"datastoreUrn ":string, //如：local
+                "isThin":boolean//如：thin
+                }
+				],
 
-	  	"nics":[
-                	{
-                 	“name”:string,//如：vmnic1                
-			"portGroupUrn ":string
-			"mac":string
-			}
-			],
+	  		"nics":[
+            	{
+            	"name":string,//如：vmnic1                
+				"portGroupUrn ":string
+				"mac":string
+				}
+				],
 
-		"properties":{
-			"bootOptions":string,//如：pxe
-			"isEnableHa":boolean, //如：true
-			"vmFaultProcess":string//reboot             
-                	}
+			"properties":{
+				"bootOptions":string,//如：pxe
+				"isEnableHa":boolean, //如：true
+				"vmFaultProcess":string//reboot             
+                }
 		} 
 }

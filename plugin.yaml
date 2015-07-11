@@ -1,7 +1,9 @@
 ##################################################################################
 # Cloudify FusionCompute built in types and plugins definitions.
 ##################################################################################
-
+imports:
+  - http://www.getcloudify.org/spec/cloudify/3.1/types.yaml
+  
 plugins:
   fc:
     executor: central_deployment_agent
@@ -15,23 +17,33 @@ node_types:
         default: ''
       image_id:
         default: ''
-
+      vm_name:
+        default: ''
+      vm_desc:
+        default: ''
     interfaces:
       cloudify.interfaces.lifecycle:
-        create: fc.plugin.tasks.create
-        start: fc.plugin.tasks.start
+        create: fc.fc_plugin.tasks.create
+        start: fc.fc_plugin.tasks.start
+        stop: fc.fc_plugin.tasks.stop
+        delete: fc.fc_plugin.tasks.delete
 
-        stop: fc.plugin.tasks.stop
-        delete: fc.plugin.tasks.delete
+      cloudify.interfaces.host:
+        get_state: fc.fc_plugin.tasks.get_state
+
       cloudify.interfaces.validation:
-        creation: fc.plugin.tasks.creation_validation
-			
-		
+        creation: fc.fc_plugin.tasks.creation_validation
+
+  cloudify.fc.nodes.LinuxServer:
+    derived_from: cloudify.fc.nodes.Server
+
+
   cloudify.fc.nodes.WindowsServer:
     derived_from: cloudify.fc.nodes.Server
     properties:
       use_password:
         default: true
+
     interfaces:
       cloudify.interfaces.worker_installer:
         install: windows_agent_installer.windows_agent_installer.tasks.install

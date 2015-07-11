@@ -2,16 +2,20 @@ import config
 from BaseRequest import HttpRequest,GetRequest
 
 def get_versions():
-
-	request_url = service_url + version_url;
-	req = BaseRequest.HttpRequest("POST", config.host, config.HTTP_PORT, url, headers);
+    
+    headers = {
+           "Host": config.host+":"+config.HTTP_PORT,
+           "Content-type": "application/json; charset=UTF-8"
+        }
+        
+	request_url = config.service_url + config.version_url;
+	req = HttpRequest("POST", config.host, config.HTTP_PORT, request_url, headers);
 	res = req.request();
 
-	if response.status == 200:
+	if res.status == 200:
 		print "Get versions OK";
 
-	print response.read();
-	return
+	return res.read();
 
 def login():
 
@@ -74,22 +78,42 @@ class OnlineRequestOld(HttpRequest):
                 res = HttpRequest.request(self);
                 return res;
 
-class vmHttpRequest(OnlineRequest):
+class objectHttpRequest(OnlineRequest):
+    
+    def __init__(self, method, object_url, body=''):
+        token = login();
+        self.token = token;
+        url = object_url;
+        OnlineRequest.__init__(self, token, method, url, body)
+        
+    def request(self):
+        res = OnlineRequest.request(self);
+        logout(self.token);
+        return res;
+        
+        
+class vmHttpRequest(objectHttpRequest):
 
-        def __init__(self, method, site_id, vm_id, action_url, body=''):
-                token = login();
-                self.token = token;
-                self.vm_id = vm_id;
+        def __init__(self, method, vm_url, action_url, body=''):
                 self.action_url = action_url;
-                url = config.service_url + config.site_url + "/" +site_id + config.vm_url + "/" + vm_id + action_url;
-                OnlineRequest.__init__(self, token, method, url, body)
+                url = vm_url + action_url;
+                objectHttpRequest.__init__(self, method, url, body)
 
         def request(self):
-                res = OnlineRequest.request(self);
-                logout(self.token);
+                res = objectHttpRequest.request(self);
                 return res;
 
-            
+class  searchRequest(objectHttpRequest):
+    
+    def __init__(self, method, search_obj_url, condition_params, body=''):
+        self.condition_params = condition_params;
+        self.body = body;
+        url = config.service_url + search_obj_url +'?'+ condition_params;
+        objectHttpRequest.__init__(self, method, url, body)
+        
+    def request(self):
+            res = objectHttpRequest.request(self);
+            return res;
 
 def logout(token):
 

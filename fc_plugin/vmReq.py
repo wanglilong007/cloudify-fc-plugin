@@ -1,7 +1,8 @@
 import config
 import FcRequest
 import json
-from FcRequest import vmHttpRequest
+import urllib
+from FcRequest import vmHttpRequest, searchRequest
 
 def get_sites(token):
 
@@ -14,56 +15,65 @@ def get_sites(token):
         print res.read();
 	return
 
-def clone_vm_by_tmplt(site_id, vm_id, vm_json_file):
+def clone_vm_by_tmplt(vm_url, vm_config):
 	#f = open(vm_json_file);
 	#data = json.load(f);
-	data = {
-		"name":"rest_test",
-		"description":"for rest test"
-	}
-	print data;
-	params = json.dumps(data)
-	req = vmHttpRequest("POST", site_id, vm_id, "/action/clone", params)
+	#data = {
+	#	"name":"rest_test",
+	#	"description":"for rest test"
+	#}
+	#print data;
+	params = json.dumps(vm_config)
+	req = vmHttpRequest("POST", vm_url, "/action/clone", params)
 	req.request();
 	return
 
-def start_vm(site_id, vm_id):
-        req = vmHttpRequest("POST", site_id, vm_id, "/action/start")
+def start_vm(vm_url):
+        req = vmHttpRequest("POST", vm_url, "/action/start")
         req.request();
         return;
 
-def stop_vm(site_id, vm_id):
+def stop_vm(vm_url):
 	data = {"mode":"safe"}
 	print data;
         params = json.dumps(data)
-        req = vmHttpRequest("POST", site_id, vm_id, "/action/clone", params)
+        req = vmHttpRequest("POST", vm_url, "/action/stop", params)
         req.request();
 	return
 
-def reboot_vm(site_id, vm_id):
+def reboot_vm(vm_url):
 	data = {"mode":"safe"}
 	print data;
         params = json.dumps(data)
-        req = vmHttpRequest("POST", site_id, vm_id, "/action/reboot", params)
+        req = vmHttpRequest("POST", vm_url, "/action/reboot", params)
         req.request();
 	return
 
-def del_vm(site_id, vm_id):
+def del_vm(vm_url):
 	data = {"isReserveDisks":0,
                 "isFormat":0,
                 "holdTime":0
 	}
 	print data;
         params = json.dumps(data)
-        req = vmHttpRequest("DELETE", site_id, vm_id, "", params)
+        req = vmHttpRequest("DELETE", vm_url, "", params)
         req.request();
 	return
 
-def get_vm_info(site_id, vm_id):
+def get_vm_info(vm_url):
 
-        req = vmHttpRequest("GET", site_id, vm_id, "", params)
+        req = vmHttpRequest("GET", vm_url, "")
         res = req.request();
 	vm_info = json.loads(res.read().decode('utf-8'))
 	
 	return vm_info
+	
+def search_vm(site_id, condition_params):
+	search_obj_url = '{}/{}/vms'.format(config.site_url, site_id)
+	condition = urllib.urlencode(condition_params)
+	print condition
+	req = searchRequest('GET', search_obj_url, condition)
+	res = req.request();
+	vms = json.loads(res.read().decode('utf-8'))
+	return vms;
 	

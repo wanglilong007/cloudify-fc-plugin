@@ -8,6 +8,7 @@ tosca_definitions_version: cloudify_dsl_1_0
 imports:  
   - types/types.yaml
   - types/plugin.yaml
+  - http://www.getcloudify.org/spec/cloudify/3.1/types.yaml
 
 ###########################################################
 # Inputs section allows the user to use same
@@ -20,11 +21,7 @@ inputs:
         The id of the site will create vm
       type: string
       default: "435008B8"
-  image_id:
-      description: >
-        the id of the image will be used for creating vm 
-      type: string
-      default: "i-00000110"
+
 node_templates:
 
   ###########################################################
@@ -33,10 +30,20 @@ node_templates:
   # on top of it.
   ###########################################################
 
-  host:
-    type: cloudify.fc.nodes.Server
+  linux_host:
+    type: cloudify.fc.nodes.LinuxServer
     properties:
       site_id: { get_input: site_id }
-      image_id: { get_input: image_id }
+      image_id: 'i-00000110'
+      vm_name: 'test_linux_vm'
+      vm_desc: 'just for test linux server'
+  windows_host:
+    type: cloudify.fc.nodes.WindowsServer
+    properties:
+      site_id: { get_input: site_id }
+      image_id: 'i-00000110'
+      vm_name: 'test_vm'
+      vm_desc: 'just for test windows server'
+      
  
  
