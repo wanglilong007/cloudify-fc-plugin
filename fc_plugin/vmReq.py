@@ -6,13 +6,13 @@ from FcRequest import vmHttpRequest, searchRequest
 
 def get_sites(token):
 
-	request_url = config.service_url + config.site_url;
-        req = BaseRequest.OnlineRequest("POST", base.host, base.HTTP_PORT, url, headers);
-        res = req.request();
-        if res.ststus == 200:
-                print 'Get sites OK';
+#	request_url = config.service_url + config.site_url;
+      #  req = BaseRequest.OnlineRequest("POST", base.host, base.HTTP_PORT, url, headers);
+        #res = req.request();
+        #if res.ststus == 200:
+        #        print 'Get sites OK';
 
-        print res.read();
+        #print res.read();
 	return
 
 def clone_vm_by_tmplt(vm_url, vm_config):

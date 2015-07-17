@@ -8,14 +8,14 @@ def get_versions():
            "Content-type": "application/json; charset=UTF-8"
         }
         
-	request_url = config.service_url + config.version_url;
-	req = HttpRequest("POST", config.host, config.HTTP_PORT, request_url, headers);
-	res = req.request();
+	#request_url = config.service_url + config.version_url;
+	#req = HttpRequest("POST", config.host, config.HTTP_PORT, request_url, headers);
+	#res = req.request();
 
-	if res.status == 200:
-		print "Get versions OK";
+	#if res.status == 200:
+	#	print "Get versions OK";
 
-	return res.read();
+	#return res.read();
 
 def login():
 

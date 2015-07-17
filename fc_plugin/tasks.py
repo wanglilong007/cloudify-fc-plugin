@@ -41,9 +41,25 @@ def create(**kwargs):
     vm_id = ctx.node.properties['image_id']
     vm_name = ctx.node.properties['vm_name']
     vm_desc = ctx.node.properties['vm_desc']
+    vm_mac = ctx.node.properties['vm_config']['ex_nic']['nic_mac']
     vm_config = {
             "name": vm_name,
-            "description" : vm_desc
+            "description" : vm_desc,
+            "vmConfig":
+                {
+                    "nics":
+                        [
+                            {
+                                "name":"Network Adapter 0",          
+                                "portGroupUrn":"urn:sites:435008B8:dvswitchs:2:portgroups:114"
+                            },
+                            {
+                                "name":"Network Adapter 1",            
+                                "portGroupUrn":"urn:sites:435008B8:dvswitchs:2:portgroups:42",
+                                "mac":vm_mac                                
+                            }
+                        ]
+                }
         }
     vm_url = '{}/{}/{}{}/{}'.format(config.service_url, config.site_url, site_id, config.vm_url, vm_id)
     vmReq.clone_vm_by_tmplt(vm_url, vm_config);
@@ -86,7 +102,7 @@ def creation_validation(**kwargs):
 def get_state(**kwargs):
     vm_url = ctx.instance.runtime_properties['vm_url'] 
 
-    for attempt in range(20):
+    for attempt in range(30):
         ctx.logger.info('verify server is up')
         vm_info = vmReq.get_vm_info(vm_url);
         vm_status = vm_info['status']
@@ -135,7 +151,7 @@ def get_vm_creating(site_id):
 def wait_vm_status(status):
     vm_url = ctx.instance.runtime_properties['vm_url'] 
 
-    for attempt in range(20):
+    for attempt in range(30):
         ctx.logger.info('getting server status......')
         vm_info = vmReq.get_vm_info(vm_url);
         vm_status = vm_info['status']
