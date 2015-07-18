@@ -70,7 +70,7 @@ def create(**kwargs):
 def start(**kwargs):
     site_id = ctx.node.properties['site_id']
     vm_url = ctx.instance.runtime_properties['vm_url']
-    #ctx.instance.runtime_properties['ip'] = ip;
+    ctx.instance.runtime_properties['ip_changed'] = False
     #vmReq.start_vm(vm_url);
     #verify
     #verify_vm_is_up(site_id, vm_id)
