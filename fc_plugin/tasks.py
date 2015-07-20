@@ -41,26 +41,35 @@ def create(**kwargs):
     vm_id = ctx.node.properties['image_id']
     vm_name = ctx.node.properties['vm_name']
     vm_desc = ctx.node.properties['vm_desc']
-    vm_mac = ctx.node.properties['vm_config']['ex_nic']['nic_mac']
+    is_need_ex_net = ctx.node.properties['need_ex_net']
     vm_config = {
-            "name": vm_name,
-            "description" : vm_desc,
-            "vmConfig":
-                {
-                    "nics":
-                        [
-                            {
-                                "name":"Network Adapter 0",          
-                                "portGroupUrn":"urn:sites:435008B8:dvswitchs:2:portgroups:114"
-                            },
-                            {
-                                "name":"Network Adapter 1",            
-                                "portGroupUrn":"urn:sites:435008B8:dvswitchs:2:portgroups:42",
-                                "mac":vm_mac                                
-                            }
-                        ]
-                }
+        "name": vm_name,
+        "description" : vm_desc
         }
+        
+    if is_need_ex_net == 'yes':
+        vm_nic_mac = ctx.node.properties['net_config']['ex_nic']['nic_mac']
+        vm_nic_name = ctx.node.properties['net_config']['ex_nic']['nic_name']
+        ex_net_port_group_urn = ctx.node.properties['net_config']['ex_nic']['portGroupUrn']
+        vm_config = {
+                "name": vm_name,
+                "description" : vm_desc,
+                "vmConfig":
+                    {
+                        "nics":
+                            [
+                                {
+                                    "name":config.cfy_net_name,          
+                                    "portGroupUrn":config.cfy_net_port_group_urn
+                                },
+                                {
+                                    "name":vm_nic_name,            
+                                    "portGroupUrn":ex_net_port_group_urn,
+                                    "mac":vm_nic_mac                                
+                                }
+                            ]
+                    }
+            }
     vm_url = '{}/{}/{}{}/{}'.format(config.service_url, config.site_url, site_id, config.vm_url, vm_id)
     vmReq.clone_vm_by_tmplt(vm_url, vm_config);
     ctx.logger.info('creating vm')

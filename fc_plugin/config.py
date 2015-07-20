@@ -21,3 +21,7 @@ action_url = "/action"
 user = "gmsysman"
 
 passwd = "af3093d0f6c3048d67b2b6199c7f44e666e03a94a25e490680675e148b0143ac"
+
+cfy_net_name = 'Network Adapter 0'
+
+cfy_net_port_group_urn = 'urn:sites:435008B8:dvswitchs:2:portgroups:114'
